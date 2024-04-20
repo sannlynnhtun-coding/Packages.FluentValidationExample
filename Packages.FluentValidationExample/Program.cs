@@ -13,6 +13,7 @@ if (!results.IsValid)
     foreach (var failure in results.Errors)
     {
         Console.WriteLine("Property " + failure.PropertyName + " failed validation. Error was: " + failure.ErrorMessage);
+        Console.WriteLine(failure.ErrorMessage);
     }
 }
 
@@ -31,9 +32,13 @@ public class CustomerValidator : AbstractValidator<Customer>
 {
     public CustomerValidator()
     {
-        RuleFor(customer => customer.Surname).NotNull();
-        RuleFor(customer => customer.Forename).NotNull();
-        RuleFor(customer => customer.Discount).NotEqual(0);
-        RuleFor(customer => customer.Address).NotNull();
+        RuleFor(customer => customer.Surname).NotNull()
+            .WithMessage("Invalid Surname.");
+        RuleFor(customer => customer.Forename).NotNull()
+            .WithMessage("Invalid Forename.");
+        RuleFor(customer => customer.Discount).NotEqual(0)
+            .WithMessage("Discount must be greater than zero.");
+        RuleFor(customer => customer.Address).NotNull()
+            .WithMessage("Invalid Address.");
     }
 }
